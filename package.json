@@ -1,10 +1,11 @@
 {
-  "name": "@kieng/just-chat",
-  "private": false,
+  "name": "dma-chat-widget",
   "version": "0.1.3",
+  "description": "DMA Chat Widget - A customizable chat popup widget",
+  "private": false,
   "type": "module",
-  "main": "dist/just-chat.umd.js",
-  "module": "dist/just-chat.es.js",
+  "main": "dist/dma-chat-widget.umd.js",
+  "module": "dist/dma-chat-widget.es.js",
   "types": "dist/main.d.ts",
   "files": [
     "dist"
@@ -17,10 +18,12 @@
     "start": "pnpm build && node mock-server.js && vite"
   },
   "devDependencies": {
-    "typescript": "^5.2.2",
-    "vite": "^5.0.8",
+    "@types/node": "^22.15.21",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
-    "cors": "^2.8.5"
+    "path": "^0.12.7",
+    "typescript": "^5.8.3",
+    "vite": "^5.0.8"
   },
   "publishConfig": {
     "access": "public"
@@ -33,7 +36,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/draphonix/just-chat.git"
+    "url": "git+https://github.com/dienmay-ai/dma-chat.git"
   },
   "author": "",
   "license": "MIT"

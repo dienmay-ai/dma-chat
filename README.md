@@ -1,4 +1,4 @@
-# Universal Chat Popup
+# DMA Chat Widget
 
 A lightweight, customizable chat widget that can be easily embedded into any website. Built with Web Components for maximum compatibility and style isolation.
 
@@ -23,7 +23,7 @@ A lightweight, customizable chat widget that can be easily embedded into any web
 
 ```html
 <!-- Latest version -->
-<script src="https://cdn.jsdelivr.net/npm/@kieng/just-chat/dist/just-chat.umd.js"
+<script src="https://cdn.jsdelivr.net/npm/dma-chat-widget@0.1.3/dist/dma-chat-widget.umd.js"
         data-webhook-url="https://your-backend.com/chat"
         data-theme-color="#1E40AF"
         data-position="bottom-right"
@@ -33,25 +33,19 @@ A lightweight, customizable chat widget that can be easily embedded into any web
         data-history-clear-button="true"
         defer>
 </script>
-
-<!-- Specific version -->
-<script src="https://cdn.jsdelivr.net/npm/@kieng/just-chat@0.1.2/dist/just-chat.umd.js"
-        data-webhook-url="https://your-backend.com/chat"
-        defer>
-</script>
 ```
 
 ### Via NPM
 
 ```bash
 # Using npm
-npm install @kieng/just-chat
+npm install dma-chat-widget
 
 # Using pnpm
-pnpm add @kieng/just-chat
+pnpm add dma-chat-widget
 
 # Using yarn
-yarn add @kieng/just-chat
+yarn add dma-chat-widget
 ```
 
 ```javascript
@@ -164,8 +158,8 @@ Expected response format:
 
 1. Clone the repository
 ```bash
-git clone https://github.com/draphonix/just-chat.git
-cd just-chat
+git clone https://github.com/dienmay-ai/dma-chat.git
+cd dma-chat
 ```
 
 2. Install dependencies

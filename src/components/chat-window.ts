@@ -12,8 +12,8 @@ export class ChatWindow extends BaseComponent {
       position: absolute;
       bottom: 80px;
       right: 0;
-      width: 320px;
-      height: 480px;
+      width: 420px;  // Đổi từ 320px -> 420px
+      height: 650px; // Đổi từ 480px -> 650px
       background: white;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -163,7 +163,59 @@ export class ChatWindow extends BaseComponent {
       opacity: 0.5;
       cursor: not-allowed;
     }
-  `;
+  
+  .footer {
+    padding: 8px 16px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #eee;
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+  }
+  
+  .header-logo {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm0 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  
+  .header-title {
+    display: flex;
+    align-items: center;
+  }
+  
+  @media (max-width: 768px) {
+    .chat-window {
+      width: 100vw;
+      height: 100vh;
+      max-height: -webkit-fill-available;
+      bottom: 0;
+      right: 0;
+      border-radius: 0;
+    }
+    
+    :host([position="bottom-left"]) .chat-window {
+      left: 0;
+      right: auto;
+    }
+    
+    .messages {
+      padding-bottom: 80px;
+    }
+    
+    .input-area {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      padding: 12px 16px;
+    }
+  }
+`;
 
   private isOpen = false;
   private storage: StorageService;
@@ -186,7 +238,15 @@ export class ChatWindow extends BaseComponent {
     
     // Header
     const header = this.createElement('div', 'header');
+    
+    // Tạo container cho logo và title
+    const titleContainer = this.createElement('div', 'header-title');
+    const logo = this.createElement('div', 'header-logo');
     const title = this.createElement('h2', '', this.getAttribute('title') || 'Chat with us');
+    
+    titleContainer.appendChild(logo);
+    titleContainer.appendChild(title);
+    
     const headerActions = this.createElement('div', 'header-actions');
     
     if (this.getAttribute('history-enabled') !== 'false' && 
@@ -201,7 +261,7 @@ export class ChatWindow extends BaseComponent {
     closeBtn.addEventListener('click', () => this.close());
     headerActions.appendChild(closeBtn);
     
-    header.appendChild(title);
+    header.appendChild(titleContainer);
     header.appendChild(headerActions);
     
     // Messages area
@@ -239,9 +299,14 @@ export class ChatWindow extends BaseComponent {
     inputArea.appendChild(input);
     inputArea.appendChild(sendBtn);
     
+    // Thêm footer
+    const footer = this.createElement('div', 'footer');
+    footer.textContent = 'Chatbot AI powered by DMA';
+    
     window.appendChild(header);
     window.appendChild(messages);
     window.appendChild(inputArea);
+    window.appendChild(footer); // Thêm footer vào cuối
     
     this.shadow.innerHTML = '';
     this.shadow.appendChild(window);

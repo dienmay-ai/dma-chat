@@ -1,11 +1,12 @@
+import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
   build: {
     lib: {
-      entry: 'src/main.ts',
-      name: 'UniversalChatPopup',
-      fileName: (format) => `just-chat.${format}.js`
+      entry: resolve(__dirname, 'src/main.ts'),
+      name: 'DMAChatWidget', // Đổi từ 'JustChat'
+      fileName: (format) => `dma-chat-widget.${format}.js` // Đổi từ 'just-chat'
     },
     rollupOptions: {
       output: {
