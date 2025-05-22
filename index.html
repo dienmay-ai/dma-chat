@@ -1,174 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Universal Chat Popup Demo</title>
-  <style>
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      line-height: 1.5;
-      margin: 0;
-      padding: 20px;
-      background-color: #f9fafb;
-    }
-    
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    
-    h1 {
-      margin-bottom: 1em;
-      color: #1e293b;
-    }
-    
-    .demo-controls {
-      margin: 2em 0;
-      padding: 1.5em;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      background: white;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-    
-    .demo-controls label {
-      display: block;
-      margin-bottom: 1.5em;
-      color: #374151;
-    }
-    
-    .demo-controls input[type="text"],
-    .demo-controls input[type="color"] {
-      width: 100%;
-      padding: 0.75em;
-      margin-top: 0.5em;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-
-    .demo-content {
-      margin: 2em 0;
-      padding: 1.5em;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      background: white;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    .demo-content h2 {
-      margin-top: 0;
-      color: #1e293b;
-    }
-
-    .demo-content ul {
-      padding-left: 1.5em;
-      color: #4b5563;
-    }
-
-    .demo-content li {
-      margin-bottom: 0.5em;
-    }
-
-    .status {
-      margin-top: 2em;
-      padding: 1em;
-      border-radius: 6px;
-      background-color: #ecfdf5;
-      color: #065f46;
-      display: flex;
-      align-items: center;
-      gap: 0.5em;
-    }
-
-    .status::before {
-      content: "●";
-      color: #059669;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Chat Widget</title>
 </head>
 <body>
-  <div class="container">
-    <h1>Universal Chat Popup Demo</h1>
+    <h1>Trang Test Chat Widget</h1>
     
-    <div class="demo-controls">
-      <label>
-        Webhook URL:
-        <input type="text" id="webhookUrl" value="http://localhost:3000/chat">
-      </label>
-      
-      <label>
-        Theme Color:
-        <input type="color" id="themeColor" value="#1E40AF">
-      </label>
-      
-      <label>
-        Title:
-        <input type="text" id="title" value="Chat with us">
-      </label>
-      
-      <label>
-        Welcome Message:
-        <input type="text" id="welcomeMessage" value="👋 Hi there! How can we help you today?">
-      </label>
-    </div>
-
-    <div class="demo-content">
-      <h2>Features Demo</h2>
-      <ul>
-        <li>Click the chat button in the bottom-right corner to open/close the chat window</li>
-        <li>Type a message and press Enter or click Send</li>
-        <li>The mock server will echo your message back after a 1-second delay</li>
-        <li>Try sending multiple messages - they'll be stored in LocalStorage</li>
-        <li>Click the trash icon to clear chat history</li>
-        <li>Messages show status indicators (sending, sent, error)</li>
-        <li>You can cancel a message while it's being sent</li>
-        <li>Try changing the theme color and other settings above</li>
-      </ul>
-    </div>
-
-    <div class="status">
-      Mock server is running at http://localhost:3000
-    </div>
-  </div>
-
-  <script type="module">
-    import { initChatPopup } from './dist/dma-chat-widget.es.js'; // Đổi từ just-chat.es.js
-    
-    // Initialize with default values
-    let widget = initChatPopup({
-      webhookUrl: document.getElementById('webhookUrl').value,
-      themeColor: document.getElementById('themeColor').value,
-      title: document.getElementById('title').value,
-      welcomeMessage: document.getElementById('welcomeMessage').value,
-      position: 'bottom-right',
-      history: {
-        enabled: true,
-        clearButton: true
-      }
-    });
-    
-    // Update widget when controls change
-    document.querySelectorAll('.demo-controls input').forEach(input => {
-      input.addEventListener('change', () => {
-        // Remove old widget
-        widget.remove();
-        
-        // Create new widget with updated config
-        widget = initChatPopup({
-          webhookUrl: document.getElementById('webhookUrl').value,
-          themeColor: document.getElementById('themeColor').value,
-          title: document.getElementById('title').value,
-          welcomeMessage: document.getElementById('welcomeMessage').value,
-          position: 'bottom-right',
-          history: {
-            enabled: true,
-            clearButton: true
-          }
-        });
-      });
-    });
-  </script>
+    <!-- Thêm script chat widget -->
+    <script src="https://cdn.jsdelivr.net/npm/dma-chat-widget@latest/dist/dma-chat-widget.umd.js"
+            data-webhook-url="https://ai.caophong.kivapp.com/webhook-test/add0b6c5-d41c-4bc4-8851-f5633ad6fd1d"
+            data-theme-color="#1E40AF"
+            data-position="bottom-right"
+            data-title="Chat với chúng tôi"
+            data-welcome-message="Chào bạn! Chúng tôi có thể giúp gì cho bạn?"
+            data-history-enabled="true"
+            data-history-clear-button="true"
+            data-logo="https://cdn11.dienmaycholon.vn/filewebdmclnew/public/userupload/files/Knms/dien-lanh/logo.jpg"
+            defer>
+    </script>
 </body>
 </html>

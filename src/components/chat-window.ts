@@ -365,12 +365,17 @@ export class ChatWindow extends BaseComponent {
   }
 
   private async sendMessage(text: string) {
+    // Escape các ký tự đặc biệt trước khi gửi
+    const escapedText = text
+      .replace(/\n/g, '\\n')
+      .replace(/\*/g, '\\*');
+    
     const messageId = crypto.randomUUID();
     const timestamp = new Date().toISOString();
     
     const message: ChatMessage = {
       id: messageId,
-      text,
+      text: escapedText, // Sử dụng escapedText
       sender: 'user',
       timestamp,
       status: 'sending'
@@ -392,15 +397,18 @@ export class ChatWindow extends BaseComponent {
         history: this.storage.getMessages().slice(-10) // Send last 10 messages
       });
 
-      // Update message status
-      message.status = 'sent';
-      this.storage.updateMessage(messageId, { status: 'sent' });
-      this.updateMessageStatus(messageId, 'sent');
+      // Xử lý response dạng array
+      let responseText = '';
+      if (Array.isArray(response.response)) {
+        responseText = response.response.join('\n');
+      } else {
+        responseText = response.response;
+      }
 
       // Add response message
       const responseMessage: ChatMessage = {
         id: crypto.randomUUID(),
-        text: response.response,
+        text: responseText,
         sender: 'backend',
         timestamp: new Date().toISOString()
       };
@@ -427,7 +435,15 @@ export class ChatWindow extends BaseComponent {
     if (!messages) return;
 
     const messageEl = this.createElement('div', `message ${message.sender}`);
-    messageEl.textContent = message.text;
+    
+    // Xử lý text thành các dòng
+    const lines = message.text.split('\n');
+    lines.forEach(line => {
+        const lineDiv = this.createElement('div');
+        lineDiv.textContent = line;
+        messageEl.appendChild(lineDiv);
+    });
+
     messageEl.dataset.messageId = message.id;
 
     if (message.sender === 'user' && message.status) {
@@ -447,7 +463,7 @@ export class ChatWindow extends BaseComponent {
 
     messages.appendChild(messageEl);
     messages.scrollTop = messages.scrollHeight;
-  }
+}
 
   private updateMessageStatus(messageId: string, status: string) {
     const messageEl = this.shadow.querySelector(`[data-message-id="${messageId}"]`);
