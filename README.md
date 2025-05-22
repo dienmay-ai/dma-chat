@@ -31,6 +31,7 @@ A lightweight, customizable chat widget that can be easily embedded into any web
         data-welcome-message="How can we help you today?"
         data-history-enabled="true"
         data-history-clear-button="true"
+        data-logo="https://your-domain.com/path/to/logo.png"
         defer>
 </script>
 ```
@@ -75,6 +76,12 @@ initChatPopup({
 | welcomeMessage | string | '' | Initial message shown when chat opens |
 | history.enabled | boolean | true | Enable/disable chat history persistence |
 | history.clearButton | boolean | true | Show/hide the clear history button |
+| logo | string | '' | URL to custom logo image |
+*Note for Logo:
+- Supported formats: PNG/JPEG/SVG
+- Recommended size: 80x80px
+- Logo URL must be an absolute path
+- The widget will automatically adjust the logo size to fit
 
 ## Features in Detail
 
