@@ -22,13 +22,12 @@ A lightweight, customizable chat widget that can be easily embedded into any web
 ### Via CDN (Recommended)
 
 ```html
-<!-- Latest version -->
-<script src="https://cdn.jsdelivr.net/npm/dma-chat-widget@0.1.3/dist/dma-chat-widget.umd.js"
+<script src="https://cdn.jsdelivr.net/npm/dma-chat-widget@latest/dist/dma-chat-widget.umd.js"
         data-webhook-url="https://your-backend.com/chat"
         data-theme-color="#1E40AF"
         data-position="bottom-right"
-        data-title="Chat with us"
-        data-welcome-message="How can we help you today?"
+        data-title="Chat với chúng tôi"
+        data-welcome-message="Chào bạn! Chúng tôi có thể giúp gì cho bạn?"
         data-history-enabled="true"
         data-history-clear-button="true"
         data-logo="https://your-domain.com/path/to/logo.png"
@@ -50,14 +49,14 @@ yarn add dma-chat-widget
 ```
 
 ```javascript
-import { initChatPopup } from '@kieng/just-chat';
+import { initChatPopup } from 'dma-chat-widget';
 
 initChatPopup({
   webhookUrl: 'https://your-backend.com/chat',
   themeColor: '#1E40AF',
   position: 'bottom-right',
-  title: 'Chat with us',
-  welcomeMessage: 'How can we help you today?',
+  title: 'Chat với chúng tôi',
+  welcomeMessage: 'Chào bạn! Chúng tôi có thể giúp gì cho bạn?',
   history: {
     enabled: true,
     clearButton: true
@@ -242,3 +241,15 @@ Built with:
 - Web Components
 - Vite
 - Express (mock server)# just-chat
+
+
+| Thuộc tính | Bắt buộc | Mặc định | Mô tả |
+|------------|----------|----------|-------|
+| data-webhook-url | Có | - | URL endpoint backend để xử lý tin nhắn |
+| data-theme-color | Không | '#1E40AF' | Màu chủ đạo cho giao diện |
+| data-position | Không | 'bottom-right' | Vị trí widget ('bottom-right' hoặc 'bottom-left') |
+| data-title | Không | 'Chat with us' | Tiêu đề cửa sổ chat |
+| data-welcome-message | Không | '' | Tin nhắn chào mừng khi mở chat |
+| data-history-enabled | Không | 'true' | Bật/tắt lưu lịch sử chat |
+| data-history-clear-button | Không | 'true' | Hiển thị nút xóa lịch sử |
+| data-logo | Không | '' | URL logo tùy chỉnh |

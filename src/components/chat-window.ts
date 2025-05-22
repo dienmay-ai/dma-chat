@@ -4,7 +4,7 @@ import { WebhookService } from '../services/webhook';
 
 export class ChatWindow extends BaseComponent {
   static get observedAttributes() {
-    return ['webhook-url', 'title', 'welcome-message', 'history-enabled', 'history-clear-button', 'position'];
+    return ['webhook-url', 'title', 'welcome-message', 'history-enabled', 'history-clear-button', 'position', 'logo', 'footer'];
   }
 
   private styles = `
@@ -12,14 +12,15 @@ export class ChatWindow extends BaseComponent {
       position: absolute;
       bottom: 80px;
       right: 0;
-      width: 420px;  // Đổi từ 320px -> 420px
-      height: 650px; // Đổi từ 480px -> 650px
+      width: 420px;
+      height: 650px;
       background: white;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      display: none; /* Thêm dòng này */
       opacity: 0;
       transform: translateY(20px);
       transition: opacity 0.2s ease, transform 0.2s ease;
@@ -177,10 +178,10 @@ export class ChatWindow extends BaseComponent {
     width: 24px;
     height: 24px;
     margin-right: 8px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm0 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>');
     background-repeat: no-repeat;
     background-size: contain;
-  }
+    background-position: center;
+}
   
   .header-title {
     display: flex;
@@ -195,6 +196,7 @@ export class ChatWindow extends BaseComponent {
       bottom: 0;
       right: 0;
       border-radius: 0;
+      position: fixed;
     }
     
     :host([position="bottom-left"]) .chat-window {
@@ -204,20 +206,37 @@ export class ChatWindow extends BaseComponent {
     
     .messages {
       padding-bottom: 80px;
+      height: calc(100% - 120px);
+      overflow-y: auto;
     }
     
     .input-area {
       position: fixed;
-      bottom: 0;
+      bottom: 30px; /* Đặt input area phía trên footer */
       left: 0;
       right: 0;
       background: white;
       padding: 12px 16px;
+      z-index: 10;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 8px 16px;
+      background-color: #f5f5f5;
+      border-top: 1px solid #eee;
+      font-size: 11px;
+      color: #666;
+      text-align: center;
+      z-index: 5;
     }
   }
 `;
 
-  private isOpen = false;
+  private isOpen = false; // Đảm bảo mặc định là false
   private storage: StorageService;
   private webhook: WebhookService;
   private sessionId: string;
@@ -225,6 +244,7 @@ export class ChatWindow extends BaseComponent {
 
   constructor() {
     super();
+    this.isOpen = false; // Đảm bảo mặc định là false
     const webhookUrl = this.getAttribute('webhook-url') || '';
     this.storage = new StorageService(webhookUrl);
     this.webhook = new WebhookService(webhookUrl);
@@ -235,6 +255,11 @@ export class ChatWindow extends BaseComponent {
 
   protected render(): void {
     const window = this.createElement('div', 'chat-window');
+    // Thêm style cho nền
+    window.style.backgroundColor = 'white'; // Hoặc màu bạn muốn
+    window.style.borderRadius = '8px';
+    window.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+    window.style.opacity = '1'; // Đảm bảo không trong suốt
     
     // Header
     const header = this.createElement('div', 'header');
@@ -242,6 +267,9 @@ export class ChatWindow extends BaseComponent {
     // Tạo container cho logo và title
     const titleContainer = this.createElement('div', 'header-title');
     const logo = this.createElement('div', 'header-logo');
+    // Thêm style động từ thuộc tính data-logo
+    const logoUrl = this.getAttribute('logo') || 'https://cdn11.dienmaycholon.vn/filewebdmclnew/public/userupload/files/Knms/dien-lanh/logo.jpg';
+    logo.style.backgroundImage = `url('${logoUrl}')`;
     const title = this.createElement('h2', '', this.getAttribute('title') || 'Chat with us');
     
     titleContainer.appendChild(logo);
@@ -301,7 +329,13 @@ export class ChatWindow extends BaseComponent {
     
     // Thêm footer
     const footer = this.createElement('div', 'footer');
-    footer.textContent = 'Chatbot AI powered by DMA';
+    const poweredBy = document.createElement('span');
+    poweredBy.textContent = 'Chatbot AI powered by ';
+    const dienmayAI = document.createElement('span');
+    dienmayAI.textContent = 'Dienmay.ai';
+    dienmayAI.style.color = '#1E40AF'; // Màu xanh
+    footer.appendChild(poweredBy);
+    footer.appendChild(dienmayAI);
     
     window.appendChild(header);
     window.appendChild(messages);
@@ -415,16 +449,21 @@ export class ChatWindow extends BaseComponent {
   }
 
   private clearHistory() {
-    if (confirm('Are you sure you want to clear the chat history?')) {
-      this.storage.clearHistory();
-      const messages = this.shadow.querySelector('.messages');
-      if (messages) {
-        messages.innerHTML = '';
-      }
-      // Reset welcome message flag when history is cleared
-      this.hasShownWelcomeMessage = false;
+    if (!this.storage || !this.shadow) return;
+    
+    this.storage.clearHistory();
+    const messages = this.shadow.querySelector('.messages');
+    if (messages) {
+      messages.innerHTML = '';
     }
-  }
+    this.hasShownWelcomeMessage = false;
+    
+    const welcomeMessage = this.getAttribute('welcome-message');
+    if (welcomeMessage) {
+      this.addSystemMessage(welcomeMessage);
+      this.hasShownWelcomeMessage = true;
+    }
+}
 
   private addSystemMessage(text: string) {
     const message: ChatMessage = {
@@ -444,14 +483,17 @@ export class ChatWindow extends BaseComponent {
   private close() {
     this.isOpen = false;
     this.updateVisibility();
+    // Thêm dòng này để ngăn sự kiện lan truyền
+    event?.stopPropagation();
     this.dispatchEvent(new CustomEvent('close'));
   }
 
   public setOpen(open: boolean) {
+    if (this.isOpen === open) return; // Thêm kiểm tra trạng thái hiện tại
+    
     this.isOpen = open;
     this.updateVisibility();
     
-    // If opening the chat and no messages exist, show welcome message
     if (open && !this.hasShownWelcomeMessage) {
       const welcomeMessage = this.getAttribute('welcome-message');
       if (welcomeMessage) {
@@ -462,15 +504,12 @@ export class ChatWindow extends BaseComponent {
   }
 
   private updateVisibility() {
-    const window = this.shadow.querySelector('.chat-window');
+    const window = this.shadow.querySelector('.chat-window') as HTMLElement;
     if (window) {
-      if (this.isOpen) {
-        window.classList.add('open');
-      } else {
-        window.classList.remove('open');
-      }
+      window.style.display = this.isOpen ? 'flex' : 'none';
+      window.classList.toggle('open', this.isOpen);
     }
-  }
+}
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     if (oldValue !== newValue) {
