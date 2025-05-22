@@ -1,6 +1,6 @@
 {
   "name": "dma-chat-widget",
-  "version": "0.1.3",
+  "version": "1.0.1",
   "description": "DMA Chat Widget - A customizable chat popup widget",
   "private": false,
   "type": "module",

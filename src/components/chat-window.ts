@@ -333,9 +333,20 @@ export class ChatWindow extends BaseComponent {
     poweredBy.textContent = 'Chatbot AI powered by ';
     const dienmayAI = document.createElement('span');
     dienmayAI.textContent = 'Dienmay.ai';
-    dienmayAI.style.color = '#1E40AF'; // Màu xanh
-    footer.appendChild(poweredBy);
-    footer.appendChild(dienmayAI);
+    dienmayAI.style.color = '#1E40AF';
+    
+    // Thêm phần custom footer nếu có
+    const customFooter = this.getAttribute('footer');
+    if (customFooter) {
+      const customText = document.createElement('span');
+      customText.textContent = ` | ${customFooter}`;
+      footer.appendChild(poweredBy);
+      footer.appendChild(dienmayAI);
+      footer.appendChild(customText);
+    } else {
+      footer.appendChild(poweredBy);
+      footer.appendChild(dienmayAI);
+    }
     
     window.appendChild(header);
     window.appendChild(messages);
